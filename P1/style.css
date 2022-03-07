@@ -1,0 +1,25 @@
+body {      /* Tipo y color de la fuente para toda la web. */
+    background-image: url("fondo.jpg");
+    font-family: 'Gill Sans MT';
+    color: black;
+}
+
+h1 {        /* Título principal */
+    font-weight: bolder;
+    text-align: center;
+    background-color: honeydew;
+    border: 3px solid burlywood;
+    border-radius: 10px;
+    padding: 3px;      
+    margin: 3px;
+}
+
+p {
+    border: 2px solid burlywood;
+    border-radius: 10px;
+    background-color: honeydew;
+    padding: 5px;      
+    margin: 5px;
+    font-style: italic;         /* Párrafos! en cursiva */
+    line-height: 25px;          /* Espacio entre líneas */
+}
