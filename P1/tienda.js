@@ -38,7 +38,8 @@ const server = http.createServer((req, res) => {
     'html' : 'text/html',
     'css'  : 'text/css',
     'jpg'  : 'image/jpg',
-    'ico'  : 'image/x-icon'
+    'ico'  : 'image/x-icon',
+    'png'  : 'image/png',
   };
 
   let mime = mime_type[type_file];

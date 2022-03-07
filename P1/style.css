@@ -4,22 +4,63 @@ body {      /* Tipo y color de la fuente para toda la web. */
     color: black;
 }
 
-h1 {        /* Título principal */
-    font-weight: bolder;
-    text-align: center;
+.container{
+    display: inline-block;
     background-color: honeydew;
-    border: 3px solid burlywood;
+    opacity: 0.9;
     border-radius: 10px;
+    border: 2px solid burlywood;
+    height: 550px;
+    width: 890px;
     padding: 3px;      
     margin: 3px;
 }
 
-p {
-    border: 2px solid burlywood;
+.miniContainer1{
+    float: left;
+    text-align: center;
     border-radius: 10px;
+    opacity: 0.9;
     background-color: honeydew;
+    border: 2px solid burlywood;
+    height: 550px;
+    width: 280px;
+    padding: 3px;      
+    margin: 3px;
+}
+
+.miniContainer2{
+    float: right;
+    text-align: center;
+    border-radius: 10px;
+    opacity: 0.9;
+    background-color: honeydew;
+    border: 2px solid burlywood;
+    height: 550px;
+    width: 285px;
+    padding: 3px;      
+    margin: 3px;
+}
+
+
+h1 {        /* Título principal */
+    font-weight: bolder;
+    text-align: center;
+    background-color: honeydew;
+    border: 4px solid burlywood;
+    border-radius: 10px;
+    padding: 5px;      
+    margin: 5px;
+}
+
+p {
+    background-color: rgba(233, 165, 77, 0.5);
+    text-align: center;
+    border: 3px solid honeydew;
+    border-radius: 10px;
     padding: 5px;      
     margin: 5px;
     font-style: italic;         /* Párrafos! en cursiva */
-    line-height: 25px;          /* Espacio entre líneas */
+    font-size: x-large;
+    line-height: 30px;          /* Espacio entre líneas */
 }
