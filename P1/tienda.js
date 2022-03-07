@@ -13,11 +13,24 @@ const server = http.createServer((req, res) => {
   //-- Construir el objeto url con la url de la solicitud
   let myURL = new URL(req.url, 'http://' + req.headers['host']);
   console.log(" * URL completa: " + myURL.href);
+    // * Pathname devuelve el nombre de ruta de una URL
   console.log(" * Ruta: " + myURL.pathname);
 
+  //-- Fichero a devolver
+  let file = "";
+
+  //-- Analizar el recurso solicitado
+  if (myURL.pathname == '/') {
+    file = '/main.html';
+  }else{
+    file = myURL.pathname;
+  }
+
+  console.log(' * Nombre del fichero: ' + file);
+  
 });
 
 //-- Activo el servidor
 server.listen(PUERTO);
 
-console.log("Servidor activado. Escuchando en puerto: " + PUERTO);
+console.log("Servidor activado. Escuchando en puerto: " + PUERTO + '\n');
