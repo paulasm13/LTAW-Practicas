@@ -1,0 +1,44 @@
+{
+  "users":[
+      {
+        "nombre":"Root1",
+        "user":"user1",
+        "correo": "user1@gmail.com"
+      },
+      {
+        "nombre": "Root2",
+        "user": "user2",
+        "correo":"user2@gmail.com"
+      }
+  ],
+
+  "products":[
+    {
+      "nombre": "Alhambra II",
+      "descripcion": "Placa con FPGA ice40HX8K",
+      "stock": 3
+    },
+    {
+      "nombre": "Icestick",
+      "descripcion": "Placa con FPGA ice40HX8K",
+      "stock": 10
+    },
+    {
+      "nombre": "Producto3",
+      "descripcion": "Blablabla",
+      "stock": 5
+    }
+  ],
+
+  "orders":[
+    {
+      "usuario":"user1",
+      "direccion": "madrid",
+      "tarjeta": "1234",
+      "productos": [{"Alhambra II": 0,
+                      "Icestick": 2,
+                      "Producto3": 0
+      }]
+    }
+  ]
+}
