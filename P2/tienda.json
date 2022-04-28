@@ -1,12 +1,10 @@
 {
     "users":[
         {
-            "nombre":"Root1",
             "user":"user1",
             "password":"patatafrita1"
         },
         {
-            "nombre":"Root2",
             "user":"user2",
             "password":"patatafrita2"
         }
