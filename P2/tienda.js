@@ -91,12 +91,18 @@ const server = http.createServer((req, res) => {
 
         let html_extra = "";
 
-        //-- Recorrer el array de usuarios
+        //-- Recorrer el array de usuarios y hacer comprobaciones
         info["users"].forEach((element, index)=>{
             console.log("Usuarios registrados: " + (index + 1) + ": " + element["user"]);
-            if(user_enter == element["user"]){
-                html_extra = "<h2>USUARIO REGISTRADO<h2>";
-                data = data.replace("HTML_EXTRA", html_extra);
+            if (user_enter == element["user"] && password_enter == element["password"]) {
+              html_extra = "<h2>¡Bienvenido!<h2>";
+              data = data.replace("HTML_EXTRA", html_extra);
+            }else if (user_enter == element["user"]) {
+              html_extra = "<h2>ERROR, contraseña incorrecta<h2>";
+              data = data.replace("HTML_EXTRA", html_extra);
+            }else{
+              html_extra = "<h2>ERROR, usuario desconocido<h2>";
+              data = data.replace("HTML_EXTRA", html_extra);
             }
         });
       }else{
