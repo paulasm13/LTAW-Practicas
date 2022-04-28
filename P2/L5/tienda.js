@@ -3,10 +3,10 @@
 
 const fs = require('fs');
 
-//-- Npmbre del fichero JSON a leer
+//-- Nombre del fichero JSON a leer
 const FICHERO_JSON = "tienda.json"
 
-//-- NOmbre del fichero JSON de salida
+//-- Nombre del fichero JSON de salida
 const FICHERO_JSON_OUT = "tienda.json"
 
 //-- Leer el fichero JSON
