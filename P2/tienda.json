@@ -1,10 +1,14 @@
 {
     "users":[
         {
-            "user":"usuario"
+            "nombre":"Root",
+            "nombre_real": "Paula",
+            "correo": "paula13@gmail.com"
         },
         {
-            "user":"usuario2"
+            "nombre":"User1",
+            "nombre_real": "Marcos",
+            "correo": "marcos@gmail.com"
         }
     ],
     

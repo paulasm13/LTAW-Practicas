@@ -11,7 +11,7 @@ const RESPUESTA = fs.readFileSync('form-resp.html', 'utf-8');
 //-- HTML de la página de respuesta de error
 const LOGIN_ERROR = fs.readFileSync('form-resp-error.html', 'utf-8');
 
-//-- HTML de la página de respuesta con login
+//-- HTML de la página principal con login
 const MAIN_LOGIN = fs.readFileSync('main_login.html', 'utf-8');
 
 //-- Cargar fichero JSON y registro
@@ -21,8 +21,8 @@ let register = [];
 
 // Usuarios en el registro
 info["users"].forEach((element, index)=>{
-  console.log("Usuarios registrados: " + (index + 1) + "/ " + element["user"]);
-  register.push(element["user"]);
+  console.log("Usuarios registrados: " + (index + 1) + "/ " + element["nombre"]);
+  register.push(element["nombre"]);
 });   
 
 //-- Cookies
@@ -31,12 +31,9 @@ info["users"].forEach((element, index)=>{
 function get_user(req) {
   // Leer cookies
   const cookie = req.headers.cookie;
-  console.log(cookie);
-
   if (cookie) {
     //-- Obtener un array con todos los pares user=valor
     let pares = cookie.split(";");
-    console.log(pares);
     //-- Variable para guardar el usuario y la contraseña
     let user_cookie;
     //-- Recorrer todos los pares user=valor
@@ -47,7 +44,6 @@ function get_user(req) {
       //-- Solo si el nombre es 'user'
       if (nombre.trim() === 'user') {
         user_cookie = valor;
-        console.log("User COK: " + user_cookie);
       }
     });
 
@@ -144,14 +140,12 @@ const server = http.createServer((req, res) => {
         data = data.replace("HTML_EXTRA", html_extra);
       }
       if(file == 'main_login.html'){
-        console.log('User' + user_cookie);
         data = MAIN_LOGIN.replace("LOGIN", user_cookie);
       }
       if(file == 'form-resp-error.html'){
         data = LOGIN_ERROR.replace("USUARIO", user_enter);
         data = data.replace("HTML_EXTRA", html_extra);
       }
-      console.log(file);
       res.write(data);
       res.end();
     }
