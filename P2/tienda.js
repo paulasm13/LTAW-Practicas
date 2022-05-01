@@ -8,48 +8,104 @@ const PUERTO = 9090;
 //-- HTML de la página de respuesta
 const RESPUESTA = fs.readFileSync('form-resp.html', 'utf-8');
 
+//-- HTML de la página de respuesta de error
+const LOGIN_ERROR = fs.readFileSync('form-resp-error.html', 'utf-8');
 
-//-- Cargar fichero JSON 
+//-- HTML de la página de respuesta con login
+const MAIN_LOGIN = fs.readFileSync('main_login.html', 'utf-8');
+
+//-- Cargar fichero JSON y registro
 const DATOS = fs.readFileSync('tienda.json','utf-8');
+let info = JSON.parse(DATOS);
+let register = [];
+
+// Usuarios en el registro
+info["users"].forEach((element, index)=>{
+  console.log("Usuarios registrados: " + (index + 1) + "/ " + element["user"]);
+  register.push(element["user"]);
+});   
+
+//-- Cookies
+
+// Usuario
+function get_user(req) {
+  // Leer cookies
+  const cookie = req.headers.cookie;
+  console.log(cookie);
+
+  if (cookie) {
+    //-- Obtener un array con todos los pares user=valor
+    let pares = cookie.split(";");
+    console.log(pares);
+    //-- Variable para guardar el usuario y la contraseña
+    let user_cookie;
+    //-- Recorrer todos los pares user=valor
+    pares.forEach((element) => {
+      //-- Obtener los nombres y valores por separado
+      let [nombre, valor] = element.split('=');
+      //-- Leer el usuario
+      //-- Solo si el nombre es 'user'
+      if (nombre.trim() === 'user') {
+        user_cookie = valor;
+        console.log("User COK: " + user_cookie);
+      }
+    });
+
+    //-- Si la variable user no está asignada
+    //-- se devuelve null
+    return user_cookie || null;
+  }
+}
+
 
 //-- Creo el servidor
 const server = http.createServer((req, res) => {
 
   console.log('\nPetición recibida');
 
-  //-- Construir el objeto url con la url de la solicitud
+  // Construir el objeto url con la url de la solicitud
   let myURL = new URL(req.url, 'http://' + req.headers['host']);
 
   // Petición
   console.log(" * URL completa: " + myURL.href);
-    // * Pathname devuelve el nombre de ruta de una URL
   console.log(" * Ruta: " + myURL.pathname);
 
-  //-- Variables 
+  // Variables 
   let filename = "";
   let file = "";
   let user_enter = "";
-  let password_enter = "";
-  let info = JSON.parse(DATOS);
+  let html_extra = "";
+  let user_cookie = get_user(req);
 
-
-  //-- Analizar el recurso solicitado
-  if (myURL.pathname == '/') {
-    filename = '/main.html';
+  // Analizar el recurso solicitado
+  if (myURL.pathname == '/' || myURL.pathname == '/main.html') {
+    // En caso de estar conectado...
+    if (user_cookie){
+      filename = '/main_login.html';
+    }else{
+      filename = '/main.html';
+    }
 
   }else if (myURL.pathname == '/procesar'){
-    filename = '/form-resp.html';
     // Leer los parámetros
     user_enter = myURL.searchParams.get('usuario');
-    password_enter = myURL.searchParams.get('contraseña');
-    console.log(" - Nombre: " + user_enter);
-    console.log(" - Apellidos: " + password_enter);
-    
+
+    if (register.includes(user_enter)) {
+      // Envio de cookies
+      res.setHeader('Set-Cookie', "user=" + user_enter);
+      filename = '/form-resp.html';
+      html_extra = "<h2>¡Bienvenido!<h2>";
+      console.log("REGISTRADO, COOKIES ENVIADAS.");
+    }else{
+      filename = '/form-resp-error.html';
+      html_extra = "<h2>ERROR. Usuario desconocido.<h2>";
+    }
+
   }else{
     filename = myURL.pathname;
   }
 
-  // Formalizar petición
+  //-- Formalizar petición
   filename = '.' + filename;
   file = filename.slice(2);
   type_file = file.split(".")[1];
@@ -71,9 +127,8 @@ const server = http.createServer((req, res) => {
 
   //-- Lectura asincrona del fichero
   fs.readFile(file, (err,data) => {
-    //-- Fichero no encontrado, página de error
+    // Fichero no encontrado, página de error
     if (err) {
-      // * La página de error es un MIME tipo 'html'
       res.writeHead(404, {'Content-Type': 'text/html'});
       console.log('\n404: Not Found');
       file = './error.html';
@@ -83,31 +138,20 @@ const server = http.createServer((req, res) => {
     }else{
       res.writeHead(200, {'Content-Type': mime});
       console.log('\n200: OK');
-      if (file == 'form-resp.html') {
-        //-- Reemplazar las palabras claves por su valores
-        //-- en la plantilla HTML
+      data = fs.readFileSync(file);
+      if(file == 'form-resp.html'){
         data = RESPUESTA.replace("USUARIO", user_enter);
-        data = data.replace("CONTRASEÑA", password_enter);
-
-        let html_extra = "";
-
-        //-- Recorrer el array de usuarios y hacer comprobaciones
-        info["users"].forEach((element, index)=>{
-            console.log("Usuarios registrados: " + (index + 1) + ": " + element["user"]);
-            if (user_enter == element["user"] && password_enter == element["password"]) {
-              html_extra = "<h2>¡Bienvenido!<h2>";
-              data = data.replace("HTML_EXTRA", html_extra);
-            }else if (user_enter == element["user"]) {
-              html_extra = "<h2>ERROR, contraseña incorrecta<h2>";
-              data = data.replace("HTML_EXTRA", html_extra);
-            }else{
-              html_extra = "<h2>ERROR, usuario desconocido<h2>";
-              data = data.replace("HTML_EXTRA", html_extra);
-            }
-        });
-      }else{
-        data = fs.readFileSync(file);
+        data = data.replace("HTML_EXTRA", html_extra);
       }
+      if(file == 'main_login.html'){
+        console.log('User' + user_cookie);
+        data = MAIN_LOGIN.replace("LOGIN", user_cookie);
+      }
+      if(file == 'form-resp-error.html'){
+        data = LOGIN_ERROR.replace("USUARIO", user_enter);
+        data = data.replace("HTML_EXTRA", html_extra);
+      }
+      console.log(file);
       res.write(data);
       res.end();
     }
@@ -116,5 +160,4 @@ const server = http.createServer((req, res) => {
 
 //-- Activo el servidor
 server.listen(PUERTO);
-
 console.log("Servidor activado. Escuchando en puerto: " + PUERTO + '\n');
