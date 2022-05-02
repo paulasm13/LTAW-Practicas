@@ -14,18 +14,45 @@
     
     "products":[
         {
-            "nombre":"Alhambra II",
-            "descripcion":"Placa con FPGA ice40HX8K",
-            "stock":5
+            "nombre":"Últimos días en Berlín",
+            "descripcion":"Finalista premio Planeta 2021",
+            "seccion": "Top Ventas",
+            "precio": 21.76,
+            "stock": 5
         },
         {
-            "nombre":"Icestick",
-            "descripcion":"Placa con FPGA ice40HX8K",
+            "nombre":"La sociedad del desconocimiento",
+            "descripcion":"Del filósofo vasco Daniel Innerarity.",
+            "seccion": "Novedades",
+            "precio": 18.05,
             "stock":12
         },
         {
-            "nombre":"Producto3",
-            "descripcion":"Blablabla",
+            "nombre":"I am Malala",
+            "descripcion":"Lectura sencilla en Inglés",
+            "seccion": "Otros idiomas",
+            "precio": 13.99,
+            "stock":7
+        },
+        {
+            "nombre":"Oceános",
+            "descripcion":"Enciclopedia de los oceános para los más pequeños",
+            "seccion": "Libros infantiles",
+            "precio": 16.05,
+            "stock":7
+        },
+        {
+            "nombre":"Feria",
+            "descripcion":"Homenaje a la infancia rural",
+            "seccion": "Literatura juvenil",
+            "precio": 19.95,
+            "stock":7
+        },
+        {
+            "nombre":"Guía Verde: Londres",
+            "descripcion":"Lo que no te puedes perder de Londres.",
+            "seccion": "Guías de viaje",
+            "precio": 20.81,
             "stock":7
         }
         ],
