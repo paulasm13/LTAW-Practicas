@@ -5,25 +5,42 @@ const fs = require('fs');
 
 const PUERTO = 9090;
 
-//-- HTML de la página de respuesta
+//-- Leer ficheros
+
+// HTML de la página de respuesta
 const RESPUESTA = fs.readFileSync('form-resp.html', 'utf-8');
-
-//-- HTML de la página de respuesta de error
+// HTML de la página de respuesta de error
 const LOGIN_ERROR = fs.readFileSync('form-resp-error.html', 'utf-8');
-
-//-- HTML de la página principal con login
+// HTML de la página principal con login
 const MAIN_LOGIN = fs.readFileSync('main_login.html', 'utf-8');
+// HTML de los productos
+const PRODUCTO1 = fs.readFileSync('libro1.html', 'utf-8');
+const PRODUCTO2 = fs.readFileSync('libro2.html', 'utf-8');
+const PRODUCTO3 = fs.readFileSync('libro3.html', 'utf-8');
+const PRODUCTO4 = fs.readFileSync('libro4.html', 'utf-8');
+const PRODUCTO5 = fs.readFileSync('libro5.html', 'utf-8');
+const PRODUCTO6 = fs.readFileSync('libro6.html', 'utf-8');
+
 
 //-- Cargar fichero JSON y registro
 const DATOS = fs.readFileSync('tienda.json','utf-8');
 let info = JSON.parse(DATOS);
 let register = [];
+let products = [];
 
 // Usuarios en el registro
 info["users"].forEach((element, index)=>{
   console.log("Usuarios registrados: " + (index + 1) + "/ " + element["nombre"]);
   register.push(element["nombre"]);
 });   
+
+// Productos en el registro
+info["products"].forEach((element, index)=>{
+  console.log("Productos registrados: " + (index + 1) + "/ " + element["nombre"] + "/ " + element["descripcion"]
+              + "/ " + element["seccion"] + "/ " + element["precio"] + "/ " + element["stock"]);
+  products.push(element["nombre"], element["descripcion"], element["seccion"], element["precio"], element["stock"]);
+});   
+
 
 //-- Cookies
 
@@ -97,7 +114,10 @@ const server = http.createServer((req, res) => {
       html_extra = "<h2>ERROR. Usuario desconocido.<h2>";
     }
 
+  }else if (myURL.pathname == '/producto1'){
+    filename = './producto1.html';
   }else{
+
     filename = myURL.pathname;
   }
 
@@ -145,6 +165,48 @@ const server = http.createServer((req, res) => {
       if(file == 'form-resp-error.html'){
         data = LOGIN_ERROR.replace("USUARIO", user_enter);
         data = data.replace("HTML_EXTRA", html_extra);
+      }
+      if(file == 'libro1.html'){
+        data = PRODUCTO1.replace("NOMBRE", products[0]);
+        data = data.replace("DESCRIPCION", products[1]);
+        data = data.replace("SECCION", products[2]);
+        data = data.replace("PRECIO", products[3]);
+        data = data.replace("STOCK", products[4]);
+      }
+      if(file == 'libro2.html'){
+        data = PRODUCTO2.replace("NOMBRE", products[5]);
+        data = data.replace("DESCRIPCION", products[6]);
+        data = data.replace("SECCION", products[7]);
+        data = data.replace("PRECIO", products[8]);
+        data = data.replace("STOCK", products[9]);
+      }
+      if(file == 'libro3.html'){
+        data = PRODUCTO3.replace("NOMBRE", products[10]);
+        data = data.replace("DESCRIPCION", products[11]);
+        data = data.replace("SECCION", products[12]);
+        data = data.replace("PRECIO", products[13]);
+        data = data.replace("STOCK", products[14]);
+      }
+      if(file == 'libro4.html'){
+        data = PRODUCTO4.replace("NOMBRE", products[15]);
+        data = data.replace("DESCRIPCION", products[16]);
+        data = data.replace("SECCION", products[17]);
+        data = data.replace("PRECIO", products[18]);
+        data = data.replace("STOCK", products[19]);
+      }
+      if(file == 'libro5.html'){
+        data = PRODUCTO5.replace("NOMBRE", products[20]);
+        data = data.replace("DESCRIPCION", products[21]);
+        data = data.replace("SECCION", products[22]);
+        data = data.replace("PRECIO", products[23]);
+        data = data.replace("STOCK", products[24]);
+      }
+      if(file == 'libro6.html'){
+        data = PRODUCTO6.replace("NOMBRE", products[25]);
+        data = data.replace("DESCRIPCION", products[26]);
+        data = data.replace("SECCION", products[27]);
+        data = data.replace("PRECIO", products[28]);
+        data = data.replace("STOCK", products[29]);
       }
       res.write(data);
       res.end();
