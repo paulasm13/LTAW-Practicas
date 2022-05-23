@@ -21,7 +21,6 @@ const date_init = new Date(Date.now());
 const date = date_init.toLocaleDateString();
 // Nombre del usuario
 const user_name =  [];
-//const user_out = ' ha abandonado el chat, hasta pronto.';
 
 //-- Número de usuarios conectados
 let num_users = 0;
@@ -86,7 +85,7 @@ io.on('connect', (socket) => {
     }
 
     //-- Reenviarlo a todos los clientes conectados
-    io.send(msg);
+    io.send(' > ' + msg);
   });
 
 });
