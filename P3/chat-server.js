@@ -1,4 +1,4 @@
-//-- Cargar las dependencias
+//-- Carga de dependencias
 const socket = require('socket.io');
 const http = require('http');
 const express = require('express');
@@ -6,39 +6,39 @@ const colors = require('colors');
 
 const PUERTO = 8080;
 
-//-- Crear una nueva aplicación web
+//-- Servidor App express / Servidor websockets http
 const app = express();
-
-//-- Crear un servidor, asociado a la App de express
 const server = http.Server(app);
-
-//-- Crear el servidor de websockets, asociado al servidor http
 const io = socket(server);
 
-//-- Variable del número de usuarios
+//-- Msg
+const commands = 'Los comandos soportados son: /help, /list, /hello y /date.';
+const welcome = 'BIENVENIDOS AL CHAT!';
+const in = ' se ha iniciado en el chat, bienvenido.';
+const out = ' ha abandonado el chat, hasta pronto.';
+
+//-- Número de usuarios conectados
 let num_users = 0;
 
-//-------- PUNTOS DE ENTRADA DE LA APLICACION WEB
-//-- Definir el punto de entrada principal de mi aplicación web
+//-- Entrada web
 app.get('/', (req, res) => {
   res.send('Bienvenido a mi aplicación Web!!!' + '<p><a href="/chat.html">Chat</a></p>');
 });
 
-//-- Esto es necesario para que el servidor le envíe al cliente la
-//-- biblioteca socket.io para el cliente
+//-- Biblioteca socket.io para el cliente
 app.use('/', express.static(__dirname +'/'));
 
-//-- El directorio publico contiene ficheros estáticos
 app.use(express.static('public'));
 
-//------------------- GESTION SOCKETS IO
-//-- Evento: Nueva conexion recibida
+//-- GESTION SOCKETS IO
 io.on('connect', (socket) => {
   
+  // Evento de conexión
   console.log('** NUEVA CONEXIÓN **'.yellow);
   num_users += 1;
+  socket.send(welcome);
 
-  //-- Evento de desconexión
+  // Evento de desconexión
   socket.on('disconnect', function(){
     console.log('** CONEXIÓN TERMINADA **'.yellow);
     num_users -= 1;
@@ -53,8 +53,18 @@ io.on('connect', (socket) => {
     if (msg.startsWith('/')) {
       switch(msg){
         case '/list':
-          console.log('Número de usuarios'.green);
+          console.log('Conteo de usuarios.'.green);
           socket.send('Hay ' + num_users + ' usuarios conectados.');
+          break;
+        case '/help':
+          console.log('Lista de comandos.'.green);
+          socket.send(commands);          
+          break;
+        case '/hello':
+          console.log('Nuevo usuario conectado.');
+          socket.send(in);
+          break;
+        case '/date':
           break;
       }
     }
@@ -65,7 +75,5 @@ io.on('connect', (socket) => {
 
 });
 
-//-- Lanzar el servidor HTTP
-//-- ¡Que empiecen los juegos de los WebSockets!
 server.listen(PUERTO);
 console.log("Escuchando en puerto: " + PUERTO);
