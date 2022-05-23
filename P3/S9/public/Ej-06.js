@@ -3,7 +3,7 @@ const button = document.getElementById("button");
 const display = document.getElementById("display");
 
 //-- Crear el Websocket
-const websocket = new WebSocket("ws://localhost:8080");
+const websocket = new WebSocket("ws://localhost:9090");
 
 let contador = 1;
 

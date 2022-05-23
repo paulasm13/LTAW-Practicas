@@ -3,7 +3,7 @@ const http = require('http');
 const express = require('express');
 const colors = require('colors');
 
-const PUERTO = 9090;
+const PUERTO = 8080;
 
 //-- Crear una aplicación web vacia
 const app = express();
@@ -44,7 +44,7 @@ wsServer.on('request', (req) => {
 
 //-- Definir el punto de entrada principal de mi aplicación web
 app.get('/', function (req, res) {
-    res.send('Bienvenido a mi aplicación Web!!!' + '<p><a href="/Ej-06.html">Ej06</a></p>');
+    res.send('Bienvenido a mi aplicación Web!!!' + '<p><a href="/test.html">Test</a></p>');
 });
 
 //-- El directorio publico contiene ficheros estáticos
