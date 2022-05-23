@@ -3,7 +3,6 @@ const socket = require('socket.io');
 const http = require('http');
 const express = require('express');
 const colors = require('colors');
-const { text } = require('express');
 
 const PUERTO = 8080;
 
