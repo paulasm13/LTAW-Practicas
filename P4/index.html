@@ -16,7 +16,7 @@
 
   <!-- Permitir sólo scripts y ficheros de la máquina local -->
   <!-- Con esto se elimina el aviso de seguridad: Insecure Content-Security-Policy -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self';" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:" />
 
 
   <link rel="stylesheet" href="style.css">
@@ -36,18 +36,28 @@
         <div class="col">
             <div class="col-lg-4">
                 <h2>· Información</h2>
-                    <p>Versión de Node: <span id="v_node" class="font"></span></p>
-                    <p>Versión de Chrome: <span id="v_chrome" class="font"></span></p>
-                    <p>Versión de Electron: <span id="v_electron" class="font"></span></p>
+                    <p>Versión de Node: <span id="v_node"></span></p>
+                    <p>Versión de Chrome: <span id="v_chrome"></span></p>
+                    <p>Versión de Electron: <span id="v_electron"></span></p>
+                    <p>Arquitectura: <span id="arq"></span></p>
+                    <p>Plataforma: <span id="plat"></span></p>
+                    <p>Directorio: <span id="direct"></span></p>
                     <br>
                 <h2>· Usuarios conectados</h2>
+                    <p><span id="users_in"></span></p>
                     <br>
                 <h2>· Dirección IP</h2>
+                    <p><span id="ip"></span></p>
+                    <img src="" id="qr">
             </div>
         </div>
         <div class="col">
             <div class="col-lg-8">
-                <h2>gfgfgf</h2>
+                <h2>· Pruebas</h2>
+                    <button id="btn_prueba">Enviar mensaje de prueba</button>
+                    <br><br>
+                <h2>· Mensajes</h2>
+                    <p id="print"></p>
             </div>
         </div>
     </div> 

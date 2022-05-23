@@ -3,7 +3,7 @@ const socket = require('socket.io');
 const http = require('http');
 const express = require('express');
 const colors = require('colors');
-const { text } = require('express');
+const ip = require('ip');
 
 const PUERTO = 8080;
 
@@ -26,9 +26,13 @@ const date = date_init.toDateString();
 //-- Número de usuarios conectados
 let num_users = 0;
 
+//-- Dirección IP
+let address = 'http://' + ip.address()+ ':'+ PUERTO + '/public/chat.html';
+console.log(address);
+
 //-- Entrada web
 app.get('/', (req, res) => {
-  res.send('Bienvenido a mi aplicación Web!!!' + '<p><a href="/chat.html">Chat</a></p>');
+  res.sendFile(__dirname + '/public/chat.html');
 });
 
 //-- Biblioteca socket.io para el cliente
@@ -40,24 +44,30 @@ app.use(express.static('public'));
 io.on('connect', (socket) => {
   
   // Evento de conexión
-  console.log('** NUEVA CONEXIÓN **'.yellow);
+  console.log('** NUEVA CONEXION **'.yellow);
   num_users += 1;
   socket.send(welcome);
   // 'broadcast.emit' envia a todos los clientes excepto al remitente
   let text = 'El usuario ' + socket.id + ' se ha conectado al chat.';
   socket.broadcast.emit('message', text);
+  win.webContents.send('users_in', num_users);
 
   // Evento de desconexión
   socket.on('disconnect', function(){
-    console.log('** CONEXIÓN TERMINADA **'.yellow);
+    console.log('** CONEXION TERMINADA **'.yellow);
     num_users -= 1;
     let text = 'El usuario ' + socket.id + ' se ha desconectado del chat.';
     socket.broadcast.emit('message', text);
+    win.webContents.send('users_in', num_users);
+
   });  
 
   //-- Mensaje recibido: Reenviarlo a todos los clientes conectados
   socket.on("message", (msg)=> {
     console.log("Mensaje Recibido!: " + msg.blue);
+
+    win.webContents.send('print', msg); 
+
 
     // Comandos especiales
     if (msg.startsWith('/')) {
@@ -92,6 +102,7 @@ io.on('connect', (socket) => {
 });
 
 
+//-- ELECTRON
 console.log("Arrancando electron...");
 
 //-- Variable global para acceder a la ventana principal
@@ -116,8 +127,22 @@ electron.app.on('ready', () => {
   //-- Cargar interfaz gráfica en HTML
   win.loadFile("index.html");
 
+  //-- Esperar a que la página se cargue y se muestre
+  //-- y luego enviar el mensaje al proceso de renderizado para que 
+  //-- lo saque por la interfaz gráfica
+  win.on('ready-to-show', () => {
+    win.webContents.send('ip', address);
+  });
+
 });
 
+
+//-- Si llega un evento al que hemos llamado print,
+// imprime ese mensaje en la consola.
+electron.ipcMain.handle('print', (event, msg) => {
+  console.log("Mensaje: " + msg);
+  io.send(msg);
+});
 
 
 server.listen(PUERTO);
