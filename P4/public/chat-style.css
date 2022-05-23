@@ -1,0 +1,64 @@
+body {
+    background-color: #c29ee6;
+    font-family: Courier;
+}
+
+h1 {
+    font-family: Verdana;
+    font-size: 60px;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.principal {
+    width: 1200px;
+    height: 680px;
+    margin: auto;
+    text-align: center;
+    background-color: #ffbe9e	;
+    border-radius: 15px;
+    border: 3px solid purple;
+}
+
+.sub_principal {
+    width: 1100px;
+    height: 400px;
+    margin: auto;
+    background-color: bisque;
+    border-radius: 15px;
+    border: 3px solid rgb(78, 3, 78);
+}
+
+#msg_entry {
+    width: 1000px;
+    height: 70px;
+    margin: auto;
+    text-align: center;
+    background-color: bisque;
+    text-align: center;
+    border-radius: 15px;
+    border: 3px solid rgb(78, 3, 78);
+    font-family: Verdana;
+    font-size: 15px;
+    font-style: oblique;
+}
+
+#send {
+    width: 100px;
+    height: 70px;
+    text-align: center;
+    background-color: bisque;
+    text-align: center;
+    border-radius: 15px;
+    border: 3px solid rgb(78, 3, 78);
+    font-family: Verdana;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+#display {
+    text-align: left;
+    margin: 20px;
+}
+
+
