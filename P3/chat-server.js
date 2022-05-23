@@ -14,13 +14,11 @@ const io = socket(server);
 
 //-- Msg
 const commands = 'Los comandos soportados son: /help, /list, /hello y /date.';
-const welcome = 'BIENVENIDO AL CHAT!';
-const user_in = 'El servidor te manda saludos. Bienvenido ';
+const welcome = '¡BIENVENIDO AL CHAT!';
+const user_in = 'El servidor te manda saludos. ¡Bienvenido ';
 // Fecha actual
 const date_init = new Date(Date.now());
-const date = date_init.toLocaleDateString();
-// Nombre del usuario
-const user_name =  [];
+const date = date_init.toDateString();
 
 //-- Número de usuarios conectados
 let num_users = 0;
@@ -43,14 +41,14 @@ io.on('connect', (socket) => {
   num_users += 1;
   socket.send(welcome);
   // 'broadcast.emit' envia a todos los clientes excepto al remitente
-  let text = 'El usuario ' + socket.id + ' se ha conectado al chat';
+  let text = 'El usuario ' + socket.id + ' se ha conectado al chat.';
   socket.broadcast.emit('message', text);
 
   // Evento de desconexión
   socket.on('disconnect', function(){
     console.log('** CONEXIÓN TERMINADA **'.yellow);
     num_users -= 1;
-    let text = 'El usuario ' + socket.id + ' se ha desconectado del chat';
+    let text = 'El usuario ' + socket.id + ' se ha desconectado del chat.';
     socket.broadcast.emit('message', text);
   });  
 
@@ -71,7 +69,7 @@ io.on('connect', (socket) => {
           break;
         case '/hello':
           console.log('Saludo del servidor.'.green);
-          socket.send(user_in);
+          socket.send(user_in + socket.id + '!');
           break;
         case '/date':
           console.log('Consulta de la fecha.'.green);

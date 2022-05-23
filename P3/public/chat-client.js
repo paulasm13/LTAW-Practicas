@@ -7,11 +7,12 @@ const audio = new Audio('sonido.mp3');
 //-- Crear un websocket. Se establece la conexión con el servidor
 const socket = io();
 
+let writing = false;
 
+//-- Mensaje recibido
 socket.on("message", (msg)=>{
   display.innerHTML += '<p style="color:blue">' + msg + '</p>';
 });
-
 
 //-- Al apretar botón 'intro' se envía un mensaje al servidor
 send.onclick = () => {
@@ -23,7 +24,6 @@ send.onclick = () => {
   //-- Borrar el mensaje actual
   msg_entry.value = "";
 }
-
 
 //-- Al apretar tecla 'intro' se envía un mensaje al servidor
 msg_entry.onchange = () => {
