@@ -3,6 +3,7 @@ const socket = require('socket.io');
 const http = require('http');
 const express = require('express');
 const colors = require('colors');
+const { text } = require('express');
 
 const PUERTO = 8080;
 
@@ -13,9 +14,14 @@ const io = socket(server);
 
 //-- Msg
 const commands = 'Los comandos soportados son: /help, /list, /hello y /date.';
-const welcome = 'BIENVENIDOS AL CHAT!';
-const in = ' se ha iniciado en el chat, bienvenido.';
-const out = ' ha abandonado el chat, hasta pronto.';
+const welcome = 'BIENVENIDO AL CHAT!';
+const user_in = 'El servidor te manda saludos. Bienvenido ';
+// Fecha actual
+const date_init = new Date(Date.now());
+const date = date_init.toLocaleDateString();
+// Nombre del usuario
+const user_name =  [];
+//const user_out = ' ha abandonado el chat, hasta pronto.';
 
 //-- Número de usuarios conectados
 let num_users = 0;
@@ -37,12 +43,16 @@ io.on('connect', (socket) => {
   console.log('** NUEVA CONEXIÓN **'.yellow);
   num_users += 1;
   socket.send(welcome);
+  // 'broadcast.emit' envia a todos los clientes excepto al remitente
+  let text = 'El usuario ' + socket.id + ' se ha conectado al chat';
+  socket.broadcast.emit('message', text);
 
   // Evento de desconexión
   socket.on('disconnect', function(){
     console.log('** CONEXIÓN TERMINADA **'.yellow);
     num_users -= 1;
-
+    let text = 'El usuario ' + socket.id + ' se ha desconectado del chat';
+    socket.broadcast.emit('message', text);
   });  
 
   //-- Mensaje recibido: Reenviarlo a todos los clientes conectados
@@ -61,10 +71,16 @@ io.on('connect', (socket) => {
           socket.send(commands);          
           break;
         case '/hello':
-          console.log('Nuevo usuario conectado.');
-          socket.send(in);
+          console.log('Saludo del servidor.'.green);
+          socket.send(user_in);
           break;
         case '/date':
+          console.log('Consulta de la fecha.'.green);
+          socket.send(date);
+          break;
+        default:
+          console.log('Comando inválido'.green);
+          socket.send('Comando inválido. Introduzca */help* para visualizar los comandos válidos.');
           break;
       }
     }
